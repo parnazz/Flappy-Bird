@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIManager : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
-    public static bool isGameActive = false;
     public GameObject leaderboardScreen;
 
     // Start is called before the first frame update
@@ -23,7 +22,6 @@ public class UIManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-        isGameActive = true;
     }
 
     public void NewGame()
@@ -33,7 +31,6 @@ public class UIManager : MonoBehaviour
 
     public void LederboardScreen()
     {
-        gameObject.SetActive(false);
-        leaderboardScreen.gameObject.SetActive(true);
+        SceneManager.LoadScene("LeaderboardScreen");
     }
 }

@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private Collider2D _playerCollider;
+    private UIManager _uIManager;
 
     [SerializeField]
     private float _jumpForce = 5f;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _invincibilityTime = 2f;
     private bool _isShieldActive = false;
+    private int _score = 0;
 
 	public GameObject Shield;
 	[HideInInspector]
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerCollider = GetComponent<Collider2D>();
+        _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -68,7 +71,8 @@ public class Player : MonoBehaviour
 			Shield.gameObject.SetActive(true);
             _isShieldActive = true;
             Destroy(collision.gameObject);
-		}
+            _playerCollider.enabled = false;
+        }
 		
         if (collision.gameObject.tag == "Buff")
         {
@@ -76,9 +80,17 @@ public class Player : MonoBehaviour
 		}
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("GoalScore"))
+        {
+            _score++;
+            _uIManager.UpdateScore(_score);
+        }
+    }
+
     IEnumerator InvincibilityCoroutine()
     {
-        _playerCollider.enabled = false;
         yield return new WaitForSeconds(_invincibilityTime);
         _playerCollider.enabled = true;
     }
