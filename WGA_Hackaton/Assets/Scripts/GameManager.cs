@@ -7,18 +7,23 @@ public class GameManager : MonoBehaviour
 {
     public static bool isGameOver = false;
 
+    private UIManager _uIManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isGameOver && Input.GetKeyDown(KeyCode.R))
+        if (isGameOver)
         {
-            SceneManager.LoadScene("MainMenu");
+            _uIManager.ShowMessageOnDeath();
+
+            if (Input.GetKeyDown(KeyCode.R))
+                SceneManager.LoadScene("MainMenu");
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
