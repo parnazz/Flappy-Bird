@@ -23,7 +23,10 @@ public class GameManager : MonoBehaviour
             _uIManager.ShowMessageOnDeath();
 
             if (Input.GetKeyDown(KeyCode.R))
+            {
                 SceneManager.LoadScene("MainMenu");
+                isGameOver = false;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
