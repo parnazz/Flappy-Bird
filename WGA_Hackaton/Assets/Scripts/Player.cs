@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _jumpForce = 5f;
-    private float _cooldownTime = 1.5f;
+    private float _cooldownTime = 0.7f;
     private float _nextJump = 0.0f;
 
     [SerializeField]
@@ -22,8 +22,6 @@ public class Player : MonoBehaviour
     private int _score = 0;
 
 	public GameObject Shield;
-	[HideInInspector]
-	public GameObject Buff;
 
     public Light _light;
     private float _timeToLight = 0.0f;
@@ -52,7 +50,9 @@ public class Player : MonoBehaviour
 
         if (transform.position.y <= _bottomBound)
         {
+            _uIManager.CalculateHighScore();
             GameManager.isGameOver = true;
+            Destroy(_rb);
         }
     }
 
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     {
         if (Time.time > _nextJump)
         {
-            _nextJump = Time.deltaTime + _cooldownTime;
+            _nextJump = Time.time + _cooldownTime;
 
             _rb.velocity = new Vector2(0, 0);
 
@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
             }
             else
             {
+                _uIManager.CalculateHighScore();
                 GameManager.isGameOver = true;
                 Destroy(_rb);
             }
@@ -125,11 +126,6 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
             _playerCollider.enabled = false;
         }
-		
-        if (collision.gameObject.tag == "Buff")
-        {
-			//Buff.gameObject.SetActive;
-		}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
