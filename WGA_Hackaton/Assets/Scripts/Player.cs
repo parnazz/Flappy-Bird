@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _jumpForce = 5f;
+    private float _cooldownTime = 1.5f;
+    private float _nextJump = 0.0f;
+
     [SerializeField]
     private float _topBound = 4.5f;
     [SerializeField]
@@ -22,6 +25,12 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public GameObject Buff;
 
+    public Light _light;
+    private float _timeToLight = 0.0f;
+    private bool _isLightOnn = false;
+    private bool _isLightOff = false;
+    private bool _isLight = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,19 +43,62 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if (Input.GetKeyDown(KeyCode.Space) && !GameManager.isGameOver)
-       {
-           _rb.velocity = new Vector2(0, 0);
-           if (transform.position.y <= _topBound)
-           {
-               _rb.AddForce(Vector3.up * _jumpForce, ForceMode2D.Impulse);
-           }
-       }
+        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.isGameOver)
+        {
+            Jump();
+        }
 
-       if (transform.position.y <= _bottomBound)
-       {
-           GameManager.isGameOver = true;
-       }
+        LightOnnOff();
+
+        if (transform.position.y <= _bottomBound)
+        {
+            GameManager.isGameOver = true;
+        }
+    }
+
+    private void Jump()
+    {
+        if (Time.time > _nextJump)
+        {
+            _nextJump = Time.deltaTime + _cooldownTime;
+
+            _rb.velocity = new Vector2(0, 0);
+
+            if (transform.position.y <= _topBound)
+            {
+                _rb.AddForce(Vector3.up * _jumpForce, ForceMode2D.Impulse);
+            }
+
+            _isLightOnn = true;
+        }
+    }
+
+    private void LightOnnOff()
+    {
+        if (_isLightOnn)
+        {
+            _timeToLight += Time.deltaTime / 0.3f;
+            _light.range = Mathf.Lerp(3f, 10f, _timeToLight);
+
+            if (_timeToLight >= 1f)
+            {
+                _isLightOnn = false;
+                _isLightOff = true;
+                _timeToLight = 0;
+            }
+        }
+
+        if (_isLightOff)
+        {
+            _timeToLight += Time.deltaTime / 0.3f;
+            _light.range = Mathf.Lerp(10f, 3f, _timeToLight);
+
+            if (_timeToLight >= 1f)
+            {
+                _isLightOff = false;
+                _timeToLight = 0;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -93,6 +145,13 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(_invincibilityTime);
         _playerCollider.enabled = true;
+    }
+
+    IEnumerator LightCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _isLightOnn = false;
+        _isLight = true;
     }
 
 }
