@@ -15,6 +15,9 @@ public class MainMenu : MonoBehaviour
     {
         _fadeEffectImg.gameObject.SetActive(true);
         _fadeEffectImg.canvasRenderer.SetAlpha(0f);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame
@@ -32,6 +35,8 @@ public class MainMenu : MonoBehaviour
     {
         _fadeEffectImg.CrossFadeAlpha(1f, _timeToStartTheGame, false);
         StartCoroutine(StartGameCoroutine(_timeToStartTheGame));
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void LederboardScreen()

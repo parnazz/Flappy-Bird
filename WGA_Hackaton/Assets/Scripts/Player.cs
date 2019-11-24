@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _jumpForce = 5f;
-    private float _cooldownTime = 0.7f;
+    private float _cooldownTime = 0.4f;
     private float _nextJump = 0.0f;
 
     [SerializeField]
