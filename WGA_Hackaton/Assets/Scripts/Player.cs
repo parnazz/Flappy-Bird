@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 	public GameObject Shield;
 
     public Light _light;
-    private float _timeToLight = 0.0f;
+    private float _timeToLight = 1.0f;
     private bool _isLightOnn = false;
     private bool _isLightOff = false;
     private bool _isLight = false;
@@ -46,7 +46,13 @@ public class Player : MonoBehaviour
             Jump();
         }
 
-        LightOnnOff();
+        //LightOnnOff();
+        //LightPingPong();
+
+        if (_isLightOnn)
+        {
+            LightPingPong();
+        }
 
         if (transform.position.y <= _bottomBound)
         {
@@ -68,8 +74,6 @@ public class Player : MonoBehaviour
             {
                 _rb.AddForce(Vector3.up * _jumpForce, ForceMode2D.Impulse);
             }
-
-            _isLightOnn = true;
         }
     }
 
@@ -101,6 +105,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void LightPingPong()
+    {
+        _light.range = Mathf.Lerp(3f, 10f, 1.0f - Mathf.PingPong(Time.time, _timeToLight));
+        StartCoroutine(LightPingPongRoutine());
+    }
+
+    IEnumerator LightPingPongRoutine()
+    {
+        yield return new WaitForSeconds(_timeToLight * 2f);
+        _isLightOnn = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
 		if (collision.gameObject.tag == "Enemy")
@@ -125,6 +141,16 @@ public class Player : MonoBehaviour
             _isShieldActive = true;
             Destroy(collision.gameObject);
             _playerCollider.enabled = false;
+        }
+
+        if (collision.gameObject.tag == "Light")
+        {
+
+            //LightPingPong();
+
+            _isLightOnn = true;
+
+            Destroy(collision.gameObject);
         }
     }
 

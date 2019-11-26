@@ -4,7 +4,7 @@ public class BG_Scroll : MonoBehaviour
 {
     float scrollSpeed = 5f;
 
-    void Update()
+    void FixedUpdate()
     {
         if (!GameManager.isGameOver)
         {
