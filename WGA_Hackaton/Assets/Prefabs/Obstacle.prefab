@@ -48,6 +48,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedOfObstacle: 5
   _xDestroyBound: -15
+  _powerupPrefabs:
+  - {fileID: 1631080368520622815, guid: fe90c37981a02114d8876f90c921e2d4, type: 3}
+  - {fileID: 8060751326558845128, guid: 08431431a66168343a5e2636c715dcd3, type: 3}
+  _randomPosToSpawnPowerup:
+  - {x: -3, y: 2, z: 0}
+  - {x: -3, y: -2, z: 0}
 --- !u!1 &3570263126128303154
 GameObject:
   m_ObjectHideFlags: 0

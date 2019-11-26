@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _bottomBound = -6f;
     [SerializeField]
-    private float _invincibilityTime = 2f;
+    private float _invincibilityTime = 1f;
     private bool _isShieldActive = false;
     private int _score = 0;
 
@@ -26,8 +26,12 @@ public class Player : MonoBehaviour
     public Light _light;
     private float _timeToLight = 1.0f;
     private bool _isLightOnn = false;
-    private bool _isLightOff = false;
-    private bool _isLight = false;
+    private float timeReset = 0f;
+
+
+
+    //private bool _isLightOff = false;
+    //private bool _isLight = false;
 
 
     // Start is called before the first frame update
@@ -46,12 +50,13 @@ public class Player : MonoBehaviour
             Jump();
         }
 
-        //LightOnnOff();
-        //LightPingPong();
-
         if (_isLightOnn)
         {
             LightPingPong();
+        }
+        else
+        {
+            _light.range = 3f;
         }
 
         if (transform.position.y <= _bottomBound)
@@ -77,37 +82,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void LightOnnOff()
-    {
-        if (_isLightOnn)
-        {
-            _timeToLight += Time.deltaTime / 0.3f;
-            _light.range = Mathf.Lerp(3f, 10f, _timeToLight);
-
-            if (_timeToLight >= 1f)
-            {
-                _isLightOnn = false;
-                _isLightOff = true;
-                _timeToLight = 0;
-            }
-        }
-
-        if (_isLightOff)
-        {
-            _timeToLight += Time.deltaTime / 0.3f;
-            _light.range = Mathf.Lerp(10f, 3f, _timeToLight);
-
-            if (_timeToLight >= 1f)
-            {
-                _isLightOff = false;
-                _timeToLight = 0;
-            }
-        }
-    }
-
     private void LightPingPong()
     {
-        _light.range = Mathf.Lerp(3f, 10f, 1.0f - Mathf.PingPong(Time.time, _timeToLight));
+        timeReset += Time.deltaTime;
+        _light.range = Mathf.Lerp(3f, 10f, Mathf.PingPong(timeReset, _timeToLight));
         StartCoroutine(LightPingPongRoutine());
     }
 
@@ -145,9 +123,6 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.tag == "Light")
         {
-
-            //LightPingPong();
-
             _isLightOnn = true;
 
             Destroy(collision.gameObject);
@@ -169,11 +144,32 @@ public class Player : MonoBehaviour
         _playerCollider.enabled = true;
     }
 
-    IEnumerator LightCoroutine()
+    /*private void LightOnnOff()
     {
-        yield return new WaitForSeconds(0.5f);
-        _isLightOnn = false;
-        _isLight = true;
-    }
+        if (_isLightOnn)
+        {
+            _timeToLight += Time.deltaTime / 0.3f;
+            _light.range = Mathf.Lerp(3f, 10f, _timeToLight);
+
+            if (_timeToLight >= 1f)
+            {
+                _isLightOnn = false;
+                _isLightOff = true;
+                _timeToLight = 0;
+            }
+        }
+
+        if (_isLightOff)
+        {
+            _timeToLight += Time.deltaTime / 0.3f;
+            _light.range = Mathf.Lerp(10f, 3f, _timeToLight);
+
+            if (_timeToLight >= 1f)
+            {
+                _isLightOff = false;
+                _timeToLight = 0;
+            }
+        }
+    }*/
 
 }

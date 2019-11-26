@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8060751326558845140}
   - component: {fileID: 8060751326558845131}
   - component: {fileID: 8060751326558845130}
-  - component: {fileID: 5933992807539913095}
   m_Layer: 0
   m_Name: Light_Powerup
   m_TagString: Light
@@ -98,16 +97,3 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
---- !u!114 &5933992807539913095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8060751326558845128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0f2cd4d4a7688d46b728d943d1136e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 5
